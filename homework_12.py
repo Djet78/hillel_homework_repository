@@ -21,22 +21,23 @@ def sum_of_digits_2(number2):
     Without using string
     """
     total = 0
-    try:
-        if len(number2) == 3:
-            first_digit = int(number2) // 100
-            second_digit = (int(number2) // 10) % 10
-            third_digit = int(number2) % 10
-            total = first_digit + second_digit + third_digit
-        else:
-            print("Only three-digit number accepted")
-    except ValueError:
-        print("Only one, two or three-digit number accepted")
+    if 100 <= number2 <= 999:
+        first_digit = int(number2) // 100
+        second_digit = (int(number2) // 10) % 10
+        third_digit = int(number2) % 10
+        total = first_digit + second_digit + third_digit
+    else:
+        print("Only three-digit number accepted")
     return total
 
 
 print("Input three-digit number and you add them between each-other.\nEnter your first number below:")
 user_number = input()
 print("Enter your second number below:")
-user_number2 = input()
+user_number2 = 0
+try:
+    user_number2 = int(input())
+except ValueError:
+    print("Only three-digit number accepted")
 print("First number =", sum_of_digits(user_number))
 print("Second number =", sum_of_digits_2(user_number2))
