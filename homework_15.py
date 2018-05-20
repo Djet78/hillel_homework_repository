@@ -20,10 +20,6 @@ def circles_intersect(x1, y1, r1, x2, y2, r2):
         return False
     elif radius_sum == distance_between_circle_centres:
         return True
-    elif distance_between_circle_centres == 0 and radius_diff == 0:
-        return True
-    elif distance_between_circle_centres == 0 and radius_diff != 0:
-        return False
     elif radius_diff < distance_between_circle_centres < radius_sum:
         return True
     elif distance_between_circle_centres == radius_diff:
