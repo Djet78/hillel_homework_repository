@@ -15,9 +15,7 @@ def circles_intersect(x1, y1, r1, x2, y2, r2):
     """
     distance_between_circle_centres = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     radius_sum = r1 + r2
-    radius_diff = r1 - r2
-    if radius_diff < 0:
-        radius_diff = -1 * radius_diff
+    radius_diff = abs(r1 - r2)
     if radius_sum < distance_between_circle_centres:
         return False
     elif radius_sum == distance_between_circle_centres:
