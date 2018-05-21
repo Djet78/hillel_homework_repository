@@ -22,12 +22,12 @@ def get_max_digit2(number):
     biggest_digit = number % 10
     number = number // 10
     while number != 0:
-        if number % 10 > biggest_digit:
-            biggest_digit = number % 10
+        curr_digit = number % 10
+        biggest_digit = max(biggest_digit, curr_digit)
         number = number // 10
     return biggest_digit
 
 
-rand_number = randint(100000000000, 999999999999)
+rand_number = randint(1e11, 1e12-1)
 print(get_max_digit1(rand_number))
 print(get_max_digit2(rand_number))
