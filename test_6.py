@@ -9,10 +9,8 @@ def is_string_isogram(text):
     """
     text = text.replace(" ", "")
     text = text.lower()
-    i = 0
-    for elem in text:
+    for i, elem in enumerate(text):
         repetitions = text.count(elem, i, len(text))
-        i += 1
         if repetitions > 1:
             return False
     return True
@@ -20,17 +18,15 @@ def is_string_isogram(text):
 
 def is_list_isogram(lst):
     """
-    Checks is all words in given list an isogram
+    Checks are all words in given list an isogram
     :param lst: takes given string
     :return: boolean value
     """
     for elem in lst:
         elem = elem.replace(" ", "")
         elem = elem.lower()
-        i = 0
-        for char in elem:
+        for i, char in enumerate(elem):
             repetitions = elem.count(char, i, len(elem))
-            i += 1
             if repetitions > 1:
                 return False
     return True
