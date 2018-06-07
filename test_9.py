@@ -9,10 +9,7 @@ def normalizer(lst):
     :param lst: Takes given list
     :return: Return modified list
     """
-    if max(lst) >= abs(min(lst)):
-        ration_value = max(lst)
-    else:
-        ration_value = abs(min(lst))
+    ration_value = max(lst, key=abs)
     for i, elem in enumerate(lst):
         lst[i] = round(elem / ration_value, 2)
     return lst
