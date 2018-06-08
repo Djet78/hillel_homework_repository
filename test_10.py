@@ -21,11 +21,10 @@ def saddle_point_finder(matrix):
         i = row.index(lowest_point)
         for index2, elem in enumerate(row):
             if elem == lowest_point:
-                for column in matrix:
-                    column_values.append(column[i])
+                for _ in matrix:
+                    column_values = [column[i] for column in matrix]
                 if elem == max(column_values):
                     coordinates.append([index, index2])
-                column_values.clear()
     return coordinates
 
 
