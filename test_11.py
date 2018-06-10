@@ -15,20 +15,17 @@ def even_odd_column_sort(matrix):
     :return: modified matrix
     """
     column_num = 0
-    for i, row in enumerate(matrix):
+    for i, elem in enumerate(matrix[0]):
         container = []
-        try:
-            for i2 in range(len(matrix)):
-                container.append(matrix[i2][i])
-            column_num += 1
-            if column_num % 2 == 0:
-                container.sort()
-            else:
-                container.sort(reverse=True)
-            for i2 in range(len(matrix)):
-                matrix[i2][i] = container[i2]
-        except IndexError:
-            return matrix
+        for i2, row in enumerate(range(len(matrix))):
+            container.append(matrix[i2][i])
+        column_num += 1
+        if column_num % 2 == 0:
+            container.sort()
+        else:
+            container.sort(reverse=True)
+        for i2 in range(len(matrix)):
+            matrix[i2][i] = container[i2]
     return matrix
 
 
@@ -45,7 +42,7 @@ pretty_print(even_odd_column_sort(custom_list))
 
 print("-------------------------------------")
 
-random_list = [[randint(1, 20) for _ in range(5)] for _ in range(5)]
+random_list = [[randint(1, 20) for _ in range(10)] for _ in range(5)]
 print("Random list")
 pretty_print(random_list)
 print("-------------------------------------")
