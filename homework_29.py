@@ -16,19 +16,11 @@ def generate_password(quantity_off_passwords):
         random_password = ""
         for i in range(8):
             random_password += choice(symbols)
-        if random_password.islower():
-            continue
-        elif random_password.isupper():
-            continue
-        else:
-            any_num = []
-            for i in random_password:
-                if i.isnumeric():
-                    any_num.append(i)
-            if len(any_num) == 0 or len(any_num) == 8:
-                continue
-            else:
-                passwords_set.add(random_password)
+        is_correct = all(any(1 for c in random_password if c in pattern)
+                         for pattern in [string.digits, string.ascii_lowercase, string.ascii_uppercase])
+        if is_correct:
+            passwords_set.add(random_password)
+
     return passwords_set
 
 
