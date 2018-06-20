@@ -18,6 +18,7 @@ def permute(text):
     letters = [chr(i) for i in range(ord("а"), ord("я") + 1)]
     word = ""
     permuted_txt = ""
+    SHUFFLE_STEP = 3
     for char in txt:
         if char.lower() in letters:
             word += char
@@ -32,7 +33,7 @@ def permute(text):
                     permuted_letters = ""
                     for letter in word[1:-1]:
                         to_shuffle.append(letter)
-                        if len(to_shuffle) == 3:
+                        if len(to_shuffle) == SHUFFLE_STEP:
                             random.shuffle(to_shuffle)
                             permuted_letters += "".join(to_shuffle)
                             to_shuffle = []
