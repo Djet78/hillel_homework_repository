@@ -9,6 +9,9 @@ running = True
 phone_book = [
               {"name": "Petr", "surname": "Petrov", "age": 50, "phone_number": "+380501234567", "comment": "None"},
               {"name": "Ivan", "surname": "Ivanov", "age": 15, "phone_number": "+380507654321", "comment": "None"},
+              {"name": "Ivan", "surname": "Ivanov", "age": 15, "phone_number": "+380507654321", "comment": "None"},
+              {"name": "Petr", "surname": "Petrov", "age": 50, "phone_number": "+380501234567", "comment": "None"},
+              {"name": "Ivan", "surname": "Ivanov", "age": 15, "phone_number": "+380507654321", "comment": "None"},
              ]
 
 
@@ -92,11 +95,15 @@ def find_entry_age_phonebook():
 def delete_entry_name_phonebook():
     name = str(input("    Enter name: "))
     found = False
-    for idx, entry in enumerate(phone_book):
-        if entry["name"] == name:
-            phone_book.remove(phone_book[idx])
+    i = 0
+    while i < len(phone_book):
+        if phone_book[i]["name"] == name:
+            phone_book.remove(phone_book[i])
+            i -= 1
             print("    %s was deleted." % name)
             found = True
+        else:
+            i += 1
     if not found:
         printError("Not found!!")
 
