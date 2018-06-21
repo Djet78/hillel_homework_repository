@@ -1,6 +1,6 @@
 # ------------------------ Task 32 -------------------------
 import string
-import operator
+# import operator
 
 
 def count_words(file_path_text, file_path_stop_words, top_n):
@@ -10,37 +10,28 @@ def count_words(file_path_text, file_path_stop_words, top_n):
     :param top_n: Determines quantity of returning words in list
     :return: List of tuples
     """
-    letters = [_ for _ in string.ascii_letters]
+    letters = list(string.ascii_letters)
 
     stop_words = open(file_path_stop_words)
-    stop_word = ""
-    lst_stop_words = []
-    for char in stop_words.read():
-        if char in letters:
-            stop_word += char
-        else:
-            lst_stop_words.append(stop_word)
-            stop_word = ""
+    lst_stop_words = stop_words.read().split('\n')
     stop_words.close()
 
     text = open(file_path_text)
-    lst_words = {}
+    words_dict = {}
     word = ""
     for char in text.read().lower():
         if char in letters:
             word += char
         else:
             if word not in lst_stop_words:
-                if word not in lst_words:
-                    lst_words[word] = 1
-                else:
-                    lst_words[word] += 1
+                words_dict[word] = words_dict.get(word, 0) + 1
             word = ""
     text.close()
 
-    sorted_lst_words = sorted(lst_words.items(), key=operator.itemgetter(1), reverse=True)
+    # sorted_lst_words = sorted(words_dict.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_lst_words = sorted(words_dict, key=words_dict.get, reverse=True)
     top_n_lst = []
-    for i in range(top_n + 1):
+    for i in range(top_n):
         top_n_lst.append(sorted_lst_words[i])
     return top_n_lst
 
