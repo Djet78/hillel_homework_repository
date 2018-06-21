@@ -5,12 +5,13 @@ from random import randint
 class Gorilla:
 
     stomach_fullness = 0
+    EATING_LIMIT = 0.9
 
     def __init__(self, stomach_volume):
         self.stomach_volume = stomach_volume
 
     def eat(self, human_volume):
-        if self.stomach_fullness >= self.stomach_volume * 0.9:
+        if self.stomach_fullness >= self.stomach_volume * self.EATING_LIMIT:
             print("I am full")
         elif (self.stomach_fullness + human_volume) <= self.stomach_volume:
             self.stomach_fullness += human_volume
@@ -27,7 +28,6 @@ def generate_human():
 
 abe = Gorilla(100)
 
-abe.eat(generate_human())
 abe.eat(generate_human())
 abe.eat(generate_human())
 abe.eat(generate_human())
