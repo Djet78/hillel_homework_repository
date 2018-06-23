@@ -1,14 +1,13 @@
-# ------------------------ Task 33 -------------------------
+# ------------------------ Task 34 -------------------------
 from random import randint
 
 
 class Gorilla:
 
-    stomach_fullness = 0
-    EATING_LIMIT = 0.9
-
     def __init__(self, stomach_volume):
         self.stomach_volume = stomach_volume
+        self.stomach_fullness = 0
+        self.EATING_LIMIT = 0.9
 
     def eat(self, human_volume):
         if self.stomach_fullness >= self.stomach_volume * self.EATING_LIMIT:
