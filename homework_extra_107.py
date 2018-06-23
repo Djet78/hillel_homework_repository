@@ -24,9 +24,9 @@ def bin_search(lst, element):
 lst = [2, 5, 7, 9, 11, 17, 33, 42, 51, 52, 76, 222]
 
 
-assert 0 == bin_search(lst, 2)
-assert 11 == bin_search(lst, 222)
-assert 5 == bin_search(lst, 17)
+assert 0 == bin_search(lst, lst[0])
+assert len(lst)-1 == bin_search(lst, lst[-1])
+assert lst[len(lst)//2] == bin_search(lst, lst[len(lst)//2])
 assert -1 == bin_search(lst, 77)
 
 print(bin_search(lst, 7))
