@@ -3,29 +3,28 @@
 
 class Magazine:
 
-    expenses = 0
-
     def __init__(self):
         self.cash_box = 0
+        self.expenses = 0
 
-    def make_sale(self, salesman_id, item, quantity):
+    def make_sale(self, salesman, item, quantity, storage):
         """
         Implement sale
 
         Count selling price and adds to 'Magazine.cash_box' and 'Salesman.personal_sales'
         Count purchase price and adds to 'Magazine.expenses'
         Subtracts 'quantity' from 'Storage.goods'
-        :param salesman_id: takes sellers id
+        :param salesman: takes seller
         :param item: takes Item object
         :param quantity: quantity of selling items
         """
         try:
-            selling_price_total = Item.item_prices[item.name][Item.SELL_PRICE] * quantity
-            buying_price_total = Item.item_prices[item.name][Item.PURCHASE_PRICE] * quantity
+            selling_price_total = item.sell_price * quantity
+            buying_price_total = item.purchase_price * quantity
             self.cash_box += selling_price_total
             self.expenses += buying_price_total
-            storage.consumption(item, quantity)
-            Salesman.personal_sales[salesman_id] += Salesman.personal_sales.get(salesman_id, 0) + selling_price_total
+            storage.goods[item.name] -= quantity
+            salesman.total_sales += selling_price_total
         except KeyError:
             raise KeyError("Wrong 'seller id' or 'item'")
 
@@ -44,47 +43,63 @@ class Magazine:
     def clear_expenses(self):
         self.expenses = 0
 
+    def write_off(self, item, quantity, storage):
+        """
+        Subtract quantity of items in 'Storage.goods' (For spoiled items)
+
+        :param item: Takes Item object
+        :param quantity: quantity of spoiled items
+        """
+        if item.name in Storage.goods:
+            storage.goods[item.name] -= quantity
+            self.expenses += item.purchase_price * quantity
+        else:
+            raise KeyError("Wrong item: %s" % item.name)
+
 
 # ----------------------------------------------------------------
 
 
 class Salesman:
 
-    personal_sales = dict()
+    LAST_ID = 1
 
-    def __init__(self, name, id):
+    def __init__(self, name):
         self.name = name
-        self.id = id
-        self.personal_sales[self.id] = 0
+        self.id = Item.LAST_ID
+        Salesman.LAST_ID += 1
+        self.total_sales = 0
 
     def show_sales(self):
-        print(self.personal_sales[self.id])
+        print(self.total_sales)
 
     def clear_sales(self):
-        self.personal_sales[self.id] = 0
+        self.total_sales = 0
 
 # ----------------------------------------------------------------
 
 
 class Item:
 
-    item_prices = dict()
-    PURCHASE_PRICE = 0
-    SELL_PRICE = 1
+    items = dict()
+    LAST_ID = 1
 
-    def __init__(self, name, purchase_price, sell_price, item_id):
+    def __init__(self, name, purchase_price, sell_price):
         self.name = name
-        self.item_id = item_id
-        self.item_prices[self.name] = [purchase_price, sell_price, item_id]
+        self.purchase_price = purchase_price
+        self.sell_price = sell_price
+        self.id = Item.LAST_ID
+        Item.LAST_ID += 1
+        self.items[self.name] = self.id
 
     def show_item(self):
         """
         Shows all item data (name, purchase price, sell price, item id)
         """
         print("Item name: ", self.name,
-              "\nPurchase price: ", self.item_prices[self.name][self.PURCHASE_PRICE],
-              "\nSell price: ", self.item_prices[self.name][self.SELL_PRICE],
-              "\nItem id: ", self.item_id)
+              "\nPurchase price: ", self.purchase_price,
+              "\nSell price: ", self.sell_price,
+              "\nItem id: ", self.id)
 
 # ----------------------------------------------------------------
 
@@ -93,7 +108,7 @@ class Storage:
 
     goods = dict()
 
-    def coming(self, item, quantity):
+    def add_item(self, item, quantity):
         """
         Saves item.name and quantity to 'Storage.goods'
 
@@ -102,7 +117,7 @@ class Storage:
         """
         self.goods[item.name] = self.goods.get(item.name, 0) + quantity
 
-    def consumption(self, item, quantity):
+    def withdraw_item(self, item, quantity):
         """
         Subtract quantity of item in 'Storage.goods' (When item was sold)
 
@@ -112,23 +127,13 @@ class Storage:
         if item.name in self.goods:
             self.goods[item.name] -= quantity
         else:
-            raise KeyError("Wrong item")
+            raise KeyError("Wrong item: %s" % item.name)
 
-    def write_off(self, item, quantity):
-        """
-        Subtract quantity of item in 'Storage.goods' (For spoiled items)
-
-        :param item: Takes Item object
-        :param quantity: quantity of spoiled items
-        """
-        if item.name in self.goods:
-            self.goods[item.name] -= quantity
-            Magazine.expenses += Item.item_prices[item.name][Item.PURCHASE_PRICE] * quantity
+    def item_balance(self, item=None):
+        if item is None:
+            print(self.goods)
         else:
-            raise KeyError("Wrong item")
-
-    def show_remnants(self):
-        print(self.goods)
+            print(item.name, self.goods[item.name])
 
 # ----------------------------------------------------------------
 
@@ -136,40 +141,39 @@ class Storage:
 # --------------------------- Sandbox ----------------------------
 
 
-seller_r2d2 = Salesman("r2d2", 1)
-seller_2 = Salesman("Petya", 2)
+seller_r2d2 = Salesman("r2d2")
+seller_2 = Salesman("Petya")
 seller_r2d2.show_sales()
 
-cabbage = Item("cabbage", 10, 15, 1)
-carrot = Item("carrot", 4, 8, 2)
-rabbit_breast = Item("rabbit_breast", 80, 110, 3)
+cabbage = Item("cabbage", 10, 15)
+carrot = Item("carrot", 4, 8)
+rabbit_breast = Item("rabbit_breast", 80, 110)
 
 storage = Storage()
 
-storage.coming(cabbage, 50)
-storage.coming(carrot, 130)
-storage.coming(rabbit_breast, 20)
-storage.show_remnants()
+storage.add_item(cabbage, 50)
+storage.add_item(carrot, 130)
+storage.add_item(rabbit_breast, 20)
+storage.item_balance(item=carrot)
 
-storage.consumption(carrot, 20)
-storage.show_remnants()
+storage.withdraw_item(carrot, 20)
+storage.item_balance()
 
-storage.write_off(carrot, 10)
-storage.write_off(cabbage, 3)
-storage.show_remnants()
+storage.item_balance()
 
 magazine = Magazine()
-
+magazine.write_off(carrot, 20, storage)
 magazine.show_income()
 
-magazine.make_sale(1, carrot, 17)
+magazine.make_sale(seller_r2d2, carrot, 18, storage)
+seller_r2d2.show_sales()
 magazine.show_income()
 
 seller_r2d2.show_sales()
 seller_2.show_sales()
-storage.show_remnants()
-storage.coming(carrot, 17)
-storage.show_remnants()
+storage.item_balance()
+storage.add_item(carrot, 17)
+storage.item_balance()
 
 carrot.show_item()
 
@@ -185,4 +189,6 @@ magazine.clear_cash_box()
 magazine.show_expenses()
 magazine.show_cash_box()
 
-print(seller_2.personal_sales)
+magazine.write_off(carrot, 20, storage)
+storage.item_balance()
+carrot.show_item()
