@@ -52,6 +52,10 @@ def is_valid_credit_card(credit_card):
     # _-_-_-_-_-_-_ Step 1, 2 _-_-_-_-_-_-_
 
     credit_card = "".join(credit_card.split())
+    if not credit_card.isnumeric():
+        raise ValueError("Unacceptable input: %s - only numbers allowed" % credit_card)
+    elif len(credit_card) <= 1:
+        raise ValueError("Unacceptable input: %s - lack of symbols" % credit_card)
     modified_card = ""
     for idx, num in enumerate(credit_card):
         if (idx % 2) == 0:
