@@ -76,6 +76,9 @@ class Salesman:
     def clear_sales(self):
         self.total_sales = 0
 
+    def show_info(self):
+        print("Name: ", self.name, "ID: ", self.id)
+
 # ----------------------------------------------------------------
 
 
@@ -104,7 +107,8 @@ class Item:
 
 class Storage:
 
-    goods = dict()
+    def __init__(self):
+        self.goods = dict()
 
     def add_item(self, item, quantity):
         """
@@ -190,3 +194,10 @@ magazine.show_cash_box()
 magazine.write_off(carrot, 20, storage)
 storage.item_balance()
 carrot.show_item()
+seller_r2d2.show_info()
+s1 = Storage()
+s1.add_item(Item('iPhone', 1000, 1200), 10)
+s1.item_balance()
+
+s2 = Storage()
+s2.item_balance()
