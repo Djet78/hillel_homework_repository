@@ -66,7 +66,7 @@ class Salesman:
 
     def __init__(self, name):
         self.name = name
-        self.id = Item.LAST_ID
+        self.id = self.LAST_ID
         Salesman.LAST_ID += 1
         self.total_sales = 0
 
@@ -81,7 +81,6 @@ class Salesman:
 
 class Item:
 
-    items = dict()
     LAST_ID = 1
 
     def __init__(self, name, purchase_price, sell_price):
@@ -90,7 +89,6 @@ class Item:
         self.sell_price = sell_price
         self.id = Item.LAST_ID
         Item.LAST_ID += 1
-        self.items[self.name] = self.id
 
     def show_item(self):
         """
